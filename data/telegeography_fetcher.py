@@ -36,7 +36,7 @@ class TeleGeographyFetcher:
         cables = raw.get("cables", raw) if isinstance(raw, dict) else raw
         result = []
         for cable in cables:
-            rfs_raw = cable.get("rfs", None) or cable.get("rfs_year", None)
+            rfs_raw = cable.get("rfs", None) or cable.get("rfs_year", None)  # normalized key
             try:
                 rfs_year = int(str(rfs_raw).strip()) if rfs_raw else None
             except (ValueError, TypeError):

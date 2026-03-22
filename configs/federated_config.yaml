@@ -1,0 +1,9 @@
+n_clients: 20
+fraction_per_round: 0.8
+n_rounds: 100
+local_epochs: 5
+dp_noise_multiplier: 1.1
+dp_max_grad_norm: 1.0
+dp_epsilon_target: 1.0
+dp_delta: 1.0e-5
+async_tolerance_rounds: 3

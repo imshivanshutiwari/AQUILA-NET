@@ -24,7 +24,7 @@ _PULSE_WIDTH_KM = (
 
 # Noise floor (dB) – corresponds to detector shot noise at ~-90 dBm
 _NOISE_FLOOR_DB = -90.0
-_NOISE_STD_DB = 0.05  # baseline Gaussian RMS noise on a clean trace
+_NOISE_STD_DB = 0.05  # std-dev of Gaussian noise added to dB-domain trace values
 
 
 class OTDRPhysicsSimulator:

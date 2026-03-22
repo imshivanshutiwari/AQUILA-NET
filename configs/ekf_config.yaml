@@ -1,0 +1,7 @@
+phi1: 0.8
+phi2: 0.1
+Q: 0.01
+R: 0.05
+fading_lambda: 0.95
+threshold: 0.7
+cusum_h: 5.0

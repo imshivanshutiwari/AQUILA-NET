@@ -109,7 +109,7 @@ _FAULT_EVENTS = [
     (2015, "natural_hazards",  "Asia-Pacific",  5, "UNITY"),
     (2015, "equipment_failure","Global",         2, "FLAG Atlantic-1"),
     (2015, "anchoring",        "Atlantic",       3, "Columbus-III"),
-    (2015, "sabotage",         "Atlantic",       5, "TAT-8"),
+    (2015, "sabotage",         "Atlantic",       5, "FLAG Atlantic-1"),
     (2016, "anchoring",        "Asia-Pacific",  4, "AAG"),
     (2016, "fishing",          "Asia-Pacific",  2, "APX-West"),
     (2016, "natural_hazards",  "Asia-Pacific",  4, "APCN-2"),

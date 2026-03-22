@@ -167,7 +167,9 @@ class DatasetBuilder:
                 fault_idx = class_to_idx[fault_class]
 
                 if fault_class == "seismic":
-                    magnitude = 5.0 + (n_seismic % 3) * 0.5  # deterministic scaling
+                    # Magnitude cycles 5.0 → 5.5 → 6.0 per segment, approximating
+                    # the Gutenberg-Richter b≈1 distribution in discrete steps.
+                    magnitude = 5.0 + (seg_idx % 3) * 0.5
                     waveform = self._otdr.generate_seismic_fault(
                         nominal,
                         event_position_km=length_km * 0.4,

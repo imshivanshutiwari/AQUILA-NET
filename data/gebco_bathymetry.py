@@ -136,5 +136,7 @@ class GEBCOBathymetry:
 
         Uses a sinusoidal model that places deep ocean at equator and
         shallower regions toward the poles, matching average oceanic profiles.
+        Longitude is intentionally unused: without bathymetric data only
+        latitude-dependent average ocean depth can be estimated.
         """
         return -4000.0 - 1000.0 * math.sin(math.radians(lat))
