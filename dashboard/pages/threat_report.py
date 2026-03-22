@@ -60,7 +60,7 @@ def _make_attribution_timeline(n_hours=168):
                 probs[cls][h] /= total
 
     import datetime
-    base_time = datetime.datetime.utcnow() - datetime.timedelta(hours=n_hours)
+    base_time = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=n_hours)
     timestamps = [base_time + datetime.timedelta(hours=h) for h in hours]
 
     fig = go.Figure()

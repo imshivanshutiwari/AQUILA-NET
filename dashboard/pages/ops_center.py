@@ -71,7 +71,7 @@ def _make_anomaly_timeline(history_df=None, cable_name='ALL'):
         lower = history_df.get('lower_ci', scores)
     else:
         n = 144
-        hours = [datetime.datetime.utcnow() - datetime.timedelta(hours=n - i) for i in range(n)]
+        hours = [datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=n - i) for i in range(n)]
         t = hours
         base = 0.2
         scores = [base + 0.1 * np.sin(i * np.pi / 24) + 0.05 * np.cos(i * np.pi / 12)
@@ -156,7 +156,7 @@ def _make_cable_health_matrix(n_cables=20, n_hours=24):
 
     cable_labels = [f'CLS-{i + 1:02d}' for i in range(n_cables)]
     hour_labels = [
-        (datetime.datetime.utcnow() - datetime.timedelta(hours=n_hours - h)).strftime('%HZ')
+        (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=n_hours - h)).strftime('%HZ')
         for h in range(n_hours)
     ]
 
@@ -185,7 +185,7 @@ def _make_cable_health_matrix(n_cables=20, n_hours=24):
 
 def _make_alert_table():
     """VIZ 05: Alert log table."""
-    now = datetime.datetime.utcnow()
+    now = datetime.datetime.now(datetime.timezone.utc)
     alerts = [
         {
             'TIME': (now - datetime.timedelta(minutes=i * 15)).strftime('%Y-%j-%H:%M:%SZ'),

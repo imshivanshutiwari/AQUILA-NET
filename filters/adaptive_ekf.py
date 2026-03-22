@@ -73,8 +73,8 @@ class AdaptiveEKF:
         x_pred, P_pred = self.predict()
 
         H = np.array([[1.0, 0.0, 0.0]])           # observation matrix (1×3)
-        innovation = measurement - float(H @ x_pred)
-        S_scalar = float(H @ P_pred @ H.T) + self.R
+        innovation = measurement - (H @ x_pred).item()
+        S_scalar = (H @ P_pred @ H.T).item() + self.R
         K = (P_pred @ H.T) / S_scalar             # Kalman gain (3×1)
 
         self.x = x_pred + K.flatten() * innovation

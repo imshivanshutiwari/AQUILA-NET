@@ -13,7 +13,7 @@ def register_realtime_callbacks(app):
         Input('interval-1s', 'n_intervals')
     )
     def update_zulu_time(n):
-        now = datetime.datetime.utcnow()
+        now = datetime.datetime.now(datetime.timezone.utc)
         return now.strftime('%Y-%j-%H:%M:%SZ')
 
     @app.callback(
