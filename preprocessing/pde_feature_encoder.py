@@ -45,6 +45,11 @@ class PDEFeatureEncoder:
         char_impedance = cmath.sqrt(Z / Y)
         propagation_const = cmath.sqrt(Z * Y)
 
+        # |propagation_const.real| – magnitude of the real (attenuation) part.
+        # The sign of the real part is always negative for a passive lossy line
+        # (decaying wave), so the absolute value is the physically meaningful
+        # attenuation constant α.  Phase information is captured separately by
+        # the imaginary part (β), which is not included in this feature vector.
         return np.array([
             wave_speed,
             abs(char_impedance),
