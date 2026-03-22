@@ -59,7 +59,7 @@ class CheckpointManager:
             Dict with keys 'model_state', 'optimizer_state', 'epoch',
             'metrics'.
         """
-        return torch.load(str(path), map_location="cpu")
+        return torch.load(str(path), map_location="cpu", weights_only=True)
 
     def get_best_checkpoint(self, metric: str = "auroc") -> str:
         """Find the checkpoint with the highest value of *metric*.
@@ -89,7 +89,7 @@ class CheckpointManager:
 
         for pt_file in pt_files:
             try:
-                ckpt = torch.load(str(pt_file), map_location="cpu")
+                ckpt = torch.load(str(pt_file), map_location="cpu", weights_only=True)
                 value = ckpt.get("metrics", {}).get(metric)
                 if value is not None and float(value) > best_value:
                     best_value = float(value)

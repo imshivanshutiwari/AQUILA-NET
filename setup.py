@@ -8,7 +8,7 @@ setup(
     python_requires=">=3.11",
     packages=find_packages(exclude=["tests*"]),
     install_requires=[
-        "torch>=2.3.0",
+        "torch>=2.6.0",
         "torch-geometric>=2.5.3",
         "opacus>=1.4.1",
         "numpy>=1.26.4",
