@@ -284,7 +284,7 @@ def _make_seismic_overlay_map():
             cmin=0, cmax=100,
             colorbar=dict(
                 title='DEPTH (km)',
-                titlefont=dict(color=TEXT_DIM, size=9),
+                title_font=dict(color=TEXT_DIM, size=9),
                 tickfont=dict(color=TEXT_DIM, size=8),
                 x=1.02,
             ),

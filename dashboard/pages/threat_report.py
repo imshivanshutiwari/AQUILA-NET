@@ -137,7 +137,7 @@ def _make_ais_density_heatmap():
         hovertemplate='Lat: %{lat:.2f}<br>Lon: %{lon:.2f}<br>Density: %{z:.1f}<extra></extra>',
         colorbar=dict(
             title='VESSEL DENSITY',
-            titlefont=dict(color=TEXT_DIM, size=9),
+            title_font=dict(color=TEXT_DIM, size=9),
             tickfont=dict(color=TEXT_DIM, size=8),
         ),
     ))

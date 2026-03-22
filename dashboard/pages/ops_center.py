@@ -177,7 +177,7 @@ def _make_cable_health_matrix(n_cables=20, n_hours=24):
         height=400, margin=dict(l=80, r=20, t=40, b=50),
         coloraxis_colorbar=dict(
             title='SCORE', tickfont=dict(color=TEXT_PRIMARY, size=8),
-            titlefont=dict(color=TEXT_DIM, size=9)
+            title_font=dict(color=TEXT_DIM, size=9)
         ),
     )
     return fig
