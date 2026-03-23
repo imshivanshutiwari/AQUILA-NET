@@ -8,12 +8,22 @@ Demonstrates the full pipeline:
   5. Full metric evaluation (AUROC, F1, ECE, confusion matrix)
   6. Baseline comparison (SVM, Random Forest, Simple GCN)
 
+Results are written to the output/ directory:
+  output/console_log.txt          – full terminal output
+  output/metrics.json             – final evaluation metrics
+  output/baseline_comparison.csv  – AQUILA vs baseline methods
+  output/training_phase_a.csv     – per-epoch Phase A history
+  output/training_phase_c.csv     – per-epoch Phase C history
+
 Run:
     python demo_run.py
 """
 
 from __future__ import annotations
 
+import csv
+import io
+import json
 import os
 import sys
 import copy
@@ -57,9 +67,86 @@ ANOMALY_RATE = 0.15    # 15 % of nodes are anomalous
 DEVICE = "cpu"
 AUG_SEED_OFFSET = 1000  # seed offset for augmented (high-anomaly-rate) graphs
 CM_LABEL_WIDTH = 20     # character width of the row-label column in the confusion matrix
+OUTPUT_DIR = os.path.join(ROOT, "output")
 
 # ═══════════════════════════════════════════════════════════════════════════
-# 1.  Synthetic dataset builder
+# 0.  Output helpers
+# ═══════════════════════════════════════════════════════════════════════════
+
+class _Tee:
+    """Write stdout to both the terminal and an in-memory buffer."""
+
+    def __init__(self):
+        self._buf = io.StringIO()
+        self._orig = sys.stdout
+
+    def write(self, text: str) -> None:
+        self._orig.write(text)
+        self._buf.write(text)
+
+    def flush(self) -> None:
+        self._orig.flush()
+
+    def getvalue(self) -> str:
+        return self._buf.getvalue()
+
+
+def _save_outputs(
+    console_text: str,
+    results: dict,
+    comparison_df,
+    phase_a_history: list,
+    phase_c_history: list,
+) -> None:
+    """Persist all demo artefacts into the output/ folder."""
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+    # 1. Full console log
+    with open(os.path.join(OUTPUT_DIR, "console_log.txt"), "w", encoding="utf-8") as f:
+        f.write(console_text)
+
+    # 2. Final evaluation metrics as JSON
+    metrics_out = {
+        "auroc": round(float(results["auroc"]), 6),
+        "f1_macro": round(float(results["f1_macro"]), 6),
+        "ece": round(float(results["ece"]), 6),
+        "confusion_matrix": results["confusion_matrix"].tolist(),
+    }
+    with open(os.path.join(OUTPUT_DIR, "metrics.json"), "w", encoding="utf-8") as f:
+        json.dump(metrics_out, f, indent=2)
+
+    # 3. Baseline comparison as CSV
+    comparison_df.to_csv(
+        os.path.join(OUTPUT_DIR, "baseline_comparison.csv"),
+        index=False,
+        float_format="%.6f",
+    )
+
+    # 4. Phase A training history
+    _write_history_csv(
+        phase_a_history,
+        os.path.join(OUTPUT_DIR, "training_phase_a.csv"),
+    )
+
+    # 5. Phase C training history
+    _write_history_csv(
+        phase_c_history,
+        os.path.join(OUTPUT_DIR, "training_phase_c.csv"),
+    )
+
+
+def _write_history_csv(history: list, path: str) -> None:
+    if not history:
+        return
+    keys = list(history[0].keys())
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=keys)
+        writer.writeheader()
+        for row in history:
+            writer.writerow({k: (round(v, 6) if isinstance(v, float) else v) for k, v in row.items()})
+
+
+
 # ═══════════════════════════════════════════════════════════════════════════
 
 FAULT_LABELS = {0: "Normal", 1: "Anchor-Drag", 2: "Seismic", 3: "Equipment-Failure"}
@@ -212,6 +299,10 @@ class _FedClient:
 
 def main() -> None:
     t0 = time.time()
+
+    # Capture all console output so we can also save it to output/console_log.txt
+    tee = _Tee()
+    sys.stdout = tee
 
     # ------------------------------------------------------------------ header
     print()
@@ -390,6 +481,14 @@ def main() -> None:
     elapsed = time.time() - t0
     print(f"\n  Total run time : {elapsed:.1f} s")
     print("  All systems nominal.\n")
+
+    # ------------------------------------------------------------------ save outputs
+    sys.stdout = tee._orig   # restore real stdout before printing save status
+    console_text = tee.getvalue()
+    _save_outputs(console_text, results, comparison_df, phase_a_history, phase_c_history)
+    print(f"  ✓ Results saved to  {OUTPUT_DIR}/")
+    print(f"      console_log.txt  |  metrics.json  |  baseline_comparison.csv")
+    print(f"      training_phase_a.csv  |  training_phase_c.csv")
 
 
 if __name__ == "__main__":
