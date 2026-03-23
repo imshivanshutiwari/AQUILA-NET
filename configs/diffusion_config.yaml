@@ -1,0 +1,7 @@
+T_diffusion: 1000
+beta_start: 1.0e-4
+beta_end: 0.02
+condition_dim: 32
+n_sabotage_augment: 5000
+lr: 2.0e-4
+n_epochs: 80

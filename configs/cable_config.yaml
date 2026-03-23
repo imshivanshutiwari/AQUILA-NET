@@ -1,0 +1,18 @@
+telegrapher_R_ohm_per_km: 0.034
+telegrapher_L_H_per_km: 0.0002
+telegrapher_C_F_per_km: 0.00015
+telegrapher_G_S_per_km: 0.000001
+euler_bernoulli_EI_Nm2: 2.5e8
+cable_density_kg_m3: 8900.0
+cable_radius_m: 0.02
+attenuation_coeff_dB_per_km: 0.2
+backscatter_coeff_dBm: -78.0
+refractive_index: 1.4677
+fault_classes:
+  - seismic
+  - anchor_drag
+  - aging
+  - sabotage
+n_cls_nodes_real: 20
+seismic_min_magnitude: 4.0
+ais_anchor_speed_threshold_knots: 0.5

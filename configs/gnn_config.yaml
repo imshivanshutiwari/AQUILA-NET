@@ -1,0 +1,12 @@
+n_pinn_layers: 3
+hidden_dim: 256
+gat_heads: 4
+dropout: 0.1
+lambda_telegrapher: 1.0
+lambda_euler_bernoulli: 0.8
+lambda_causality: 0.6
+lr: 1.0e-4
+weight_decay: 1.0e-5
+n_epochs_pretrain: 50
+batch_size: 32
+anomaly_pos_weight: 99.0

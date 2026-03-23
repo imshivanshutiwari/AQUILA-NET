@@ -1,0 +1,24 @@
+name: AQUILA-NET CI
+
+on:
+  push:
+    branches: [main, "copilot/**"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install CPU PyTorch
+        run: pip install torch==2.6.0 --index-url https://download.pytorch.org/whl/cpu
+      - name: Install dependencies
+        run: pip install torch-geometric==2.5.3 opacus==1.4.1 numpy==1.26.4 scipy==1.13.0 pandas==2.2.2 scikit-learn==1.4.2 plotly==5.22.0 dash==2.17.0 dash-bootstrap-components==1.6.0 dash-cytoscape==0.3.0 obspy==1.4.0 pyyaml==6.0.1 python-dotenv==1.0.1 requests==2.31.0 netCDF4==1.6.5 h5py==3.11.0 pyproj==3.6.1 shapely==2.0.4 tqdm==4.66.4 pytest==8.2.0
+      - name: Run tests
+        run: pytest tests/ -v --tb=short
